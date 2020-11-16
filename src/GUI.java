@@ -100,11 +100,28 @@ public class GUI {
 			player4Item.addActionListener(new player4());
 		}
 		
+		JMenu judgeMenu = new JMenu("Judge");
+		judgeMenu.setMnemonic('J');
+		
+		JMenuItem winItem = new JMenuItem("Winner");
+		winItem.setMnemonic('W');
+		judgeMenu.add(winItem);
+		
+		winItem.addActionListener(new winner());
+			
+		
+		
+		JMenuItem totalItem = new JMenuItem("Total");
+		totalItem.setMnemonic('T');
+		judgeMenu.add(totalItem);
+		
+		totalItem.addActionListener(new showTotal());
+		
 		JMenuBar bar = new JMenuBar();
 		mainFrame.setJMenuBar(bar);
 		bar.add(sysMenu);
 		bar.add(playerMenu);
-		
+		bar.add(judgeMenu);
 	
 		mainFrame.repaint();
 		mainFrame.validate();
@@ -122,26 +139,54 @@ public class GUI {
 		return label;
 	}
 
-	public static void fillTable(Player player){
+	public static void fillTable(Player player, int score){
 		playerFrame = new JFrame("player"); // creates and sets title of mainFrame
 		playerFrame.setLayout(new FlowLayout());
 		playerFrame.setSize(400, 200);
 		playerFrame.setLocation(100, 100);
 		playerFrame.setVisible(true);
-		
+		System.out.printf("%d", score);
+		System.out.println();
 		
 		ArrayList<Player> currPlayers = currTable.getPlayers();
 		
-	
 		JPanel cardPanel = new JPanel();
+		
 		for(int i=0; i<5; i++) {
 			cardPanel.add(iconizeCard(player.c(i).getCardID()));
 		}
-		// add randomized cards with for loop
-//		cardPanel.setBounds(rect(x, y, size));
 		playerFrame.add(cardPanel);
-		cardPanel.validate();
-		cardPanel.repaint();
+	}
+	
+	public static void totalTable(){
+		playerFrame = new JFrame("player"); // creates and sets title of mainFrame
+		playerFrame.setLayout(new FlowLayout());
+		playerFrame.setSize(500, 600);
+		playerFrame.setLocation(100, 100);
+		playerFrame.setVisible(true);
+		
+		boolean check[] = new boolean[5];
+		for(int j=0; j<player_num; j++) {
+			JPanel cardPanel = new JPanel();
+			
+			int win_idx = 0;
+			int max_score = 0;
+			for(int i=0; i<player_num; i++)
+			{
+				if(check[i]) continue;
+				Player tmp = currTable.getPlayers().get(i);
+				if(max_score < tmp.get_score()) {
+					max_score = tmp.get_score();
+					win_idx = i;
+				}
+			}
+			check[win_idx] = true;
+			Player player = currTable.getPlayers().get(win_idx);
+			for(int i=0; i<5; i++) {
+				cardPanel.add(iconizeCard(player.c(i).getCardID()));
+			}
+			playerFrame.add(cardPanel);
+		}
 		
 	}
 	
@@ -173,7 +218,8 @@ public class GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			fillTable(currTable.getPlayers().get(0));
+			Player p1 = currTable.getPlayers().get(0);
+			fillTable(currTable.getPlayers().get(0), p1.get_score());
 		}
 		
 	}
@@ -182,7 +228,8 @@ public class GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			fillTable(currTable.getPlayers().get(1));
+			Player p2 = currTable.getPlayers().get(1);
+			fillTable(currTable.getPlayers().get(1), p2.get_score());
 		}
 		
 	}
@@ -191,7 +238,8 @@ public class GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			fillTable(currTable.getPlayers().get(2));
+			Player p3 = currTable.getPlayers().get(2);
+			fillTable(currTable.getPlayers().get(2), p3.get_score());
 		}
 		
 	}
@@ -200,11 +248,40 @@ public class GUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			fillTable(currTable.getPlayers().get(3));
+			Player p4 = currTable.getPlayers().get(3);
+			fillTable(currTable.getPlayers().get(3), p4.get_score());
 		}
 		
 	}
 	
+	private static class winner implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int win_idx = 0;
+			int max_score = 0;
+			for(int i=0; i<player_num; i++)
+			{
+				Player tmp = currTable.getPlayers().get(i);
+				if(max_score < tmp.get_score()) {
+					max_score = tmp.get_score();
+					win_idx = i;
+				}
+			}
+			Player win_p = currTable.getPlayers().get(win_idx);
+			fillTable(currTable.getPlayers().get(win_idx), win_p.get_score());
+		}
+		
+	}
+	
+	private static class showTotal implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			totalTable();
+		}
+		
+	}
 	private static void gameOver(){
 		System.exit(0);
 	}

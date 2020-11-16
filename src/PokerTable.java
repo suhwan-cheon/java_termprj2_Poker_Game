@@ -1,3 +1,6 @@
+/*
+ * 초기화 단계
+ */
 import java.util.ArrayList;
 
 public class PokerTable {

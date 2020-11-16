@@ -4,7 +4,7 @@ public class Player {
 
 	private String name;
 	private Hand myHand;
-
+	private int score;
 	public Player(Deck sharedDeck) {
 		myHand = new Hand(sharedDeck);
 	}
@@ -31,6 +31,10 @@ public class Player {
 	public ArrayList<Card> getTwoCards() {
 		return myHand.getHand();
 	}
+	
+	public int get_score() {
+		return score;
+	}
 
 
 	private class Hand {
@@ -39,7 +43,8 @@ public class Player {
 		private Card[] c = new Card[5];
 		private ArrayList<Card> myHand;
 		private boolean hasDrawn;
-
+		private HandScorer handsc;
+		
 		public Hand(Deck d) {
 			this.sharedDeck = d;
 			this.hasDrawn = false;
@@ -50,6 +55,7 @@ public class Player {
 			boolean wasHoldingCards = hasDrawn;
 			for(int i=0; i<5; i++) c[i] = sharedDeck.draw();
 			this.hasDrawn = true;
+			ArrayList<Card> tmp = getHand();
 			return wasHoldingCards;
 		}
 
@@ -59,7 +65,8 @@ public class Player {
 				throw new RuntimeException(msg);
 			}
 			for(int i=0; i<5; i++) myHand.add(c[i]);
-			
+			handsc = new HandScorer(myHand);
+			score = handsc.return_Score();
 			return myHand;
 		}
 

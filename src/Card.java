@@ -1,3 +1,6 @@
+/*
+ * 번호에 따른 카드 매칭 기능
+ */
 import javax.swing.ImageIcon;
 import java.io.File;
 
@@ -8,9 +11,9 @@ public class Card implements Comparable<Card>{
 	private int cardID;
 	private ImageIcon myIcon;
 	
-	public static final int SPADE = 2;
-	public static final int HEART = 3; // Maybe change later 
-	public static final int DIAMOND= 4;
+	public static final int SPADE = 4;
+	public static final int HEART = 2; 
+	public static final int DIAMOND= 3;
 	public static final int CLUB = 1;
 		
 	public Card(int number, int suit) {
@@ -18,29 +21,20 @@ public class Card implements Comparable<Card>{
 		this.suit = suit;
 		this.cardID = (suit - 1) * 13 + number;
 		this.checkInput();
-//		initializeIcon();
 	}
 	
 	public Card(int cardNumber) {
 		this.cardID = cardNumber;
 		this.suit = (cardNumber - 1) / 13 + 1;
 		
-//		if (cardNumber == 52) {
-//			// Edge case for suit = 5
-//			suit--;
-//		}
 		this.number = cardNumber % 13;
 		if (cardNumber % 13 == 0) {
 			this.number = 13;
 		}
 		this.checkInput();
 
-//		initializeIcon();
 	}
 	
-	/**
-	 * Throws an exception if input suit/number is bad
-	 */
 	public void checkInput() {
 		if (number < 1 || number > 13) {
 			throw new IllegalArgumentException("Can't make " + cardID);
@@ -54,9 +48,6 @@ public class Card implements Comparable<Card>{
 		}
 	}
 	
-//	// Gets the correct icon from the "images" folder
-//	private void initializeIcon() {
-//	}
 	
 	public ImageIcon getIcon() {
 		return myIcon;
@@ -117,17 +108,10 @@ public class Card implements Comparable<Card>{
 		return false;
 	}
 	
-	/**
-	 * Just compares the numbers. This is used in ordering cards for
-	 * tie-breakers, and thus aces are treated as high
-	 */
+	//숫자를 비교하되, 에이스인 경우 예외처리함
 	public int compareTo(Card other) {
 		int otherNum = other.number;
 		int thisNum = this.number;
-		if (thisNum == 1)
-			thisNum = 14;
-		if (otherNum == 1)
-			otherNum = 14;
 		return otherNum - thisNum;
 	}
 }
