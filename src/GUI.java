@@ -185,10 +185,19 @@ public class GUI {
 		playerFrame.add(jokbo);
 	}
 	
+	public static String return_rank(int x) {
+		String temp = "";
+		if(x==1) temp = "First";
+		else if(x==2) temp = "Second";
+		else if(x==3) temp = "Third";
+		else if(x==4) temp = "Fourth";
+		return temp;
+	}
+	
 	public static void totalTable(){
 		playerFrame = new JFrame("Total"); // creates and sets title of mainFrame
 		playerFrame.setLayout(new FlowLayout());
-		playerFrame.setSize(600, 500);
+		playerFrame.setSize(650, 500);
 		playerFrame.setLocation(100, 100);
 		playerFrame.setVisible(true);
 		
@@ -210,16 +219,23 @@ public class GUI {
 			Player players = currTable.getPlayers().get(win_idx);
 			for(int i=0; i<5; i++) {
 				cardPanel.add(iconizeCard(players.c(i).getCardID()));
-				
 			}
+			
 			String user_name = player[win_idx];
+			
+			JLabel rank = new JLabel();
+			rank.setText(return_rank(j+1) + " is '" + user_name + "' : " + players.get_jname());
+			playerFrame.add(rank);
+			
+			
 			// 해당 player의 카드
 			playerFrame.add(cardPanel);
 			// 해당 족보
+			/*
 			JLabel jokbo = new JLabel();
 			jokbo.setText(user_name + " : " + players.get_jname());
 			
-			playerFrame.add(jokbo);
+			playerFrame.add(jokbo);*/
 			
 		}
 		
