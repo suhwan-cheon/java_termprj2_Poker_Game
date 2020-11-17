@@ -94,7 +94,10 @@ public class HandScorer {
 			int next_max_num = -1;
 			for(int i = 1; i <= 13; i++) {
 				if(checking_arr[i] == 2) one = i;
-				else if(checking_arr[i] == 1)next_max_num = Math.max(next_max_num,i);
+				else if(checking_arr[i] == 1) {
+					if(i==1) next_max_num = 14;
+					else next_max_num = Math.max(next_max_num,i);
+				}
 				else continue;
 			}
 			// one에는 pair의 정보가, next_max_num 에는 pair를 제외한 가장 큰 수가 저장
