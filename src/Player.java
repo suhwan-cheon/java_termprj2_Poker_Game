@@ -3,8 +3,9 @@ import java.util.ArrayList;
 public class Player {
 
 	private String name;
-	private Hand myHand;
+	public Hand myHand;
 	private int score;
+	private String jname;
 	public Player(Deck sharedDeck) {
 		myHand = new Hand(sharedDeck);
 	}
@@ -35,6 +36,9 @@ public class Player {
 	public int get_score() {
 		return score;
 	}
+	public String get_jname() {
+		return jname;
+	}
 
 
 	private class Hand {
@@ -43,7 +47,7 @@ public class Player {
 		private Card[] c = new Card[5];
 		private ArrayList<Card> myHand;
 		private boolean hasDrawn;
-		private HandScorer handsc;
+		public HandScorer handsc;
 		
 		public Hand(Deck d) {
 			this.sharedDeck = d;
@@ -61,12 +65,13 @@ public class Player {
 
 		public ArrayList<Card> getHand() {
 			if (!hasDrawn) {
-				String msg = "Call to getHand on a hand that hasn't drawn yet!";
+				String msg = "nono";
 				throw new RuntimeException(msg);
 			}
 			for(int i=0; i<5; i++) myHand.add(c[i]);
 			handsc = new HandScorer(myHand);
 			score = handsc.return_Score();
+			jname = handsc.return_Jokbo();
 			return myHand;
 		}
 

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.lang.Math;
 import java.util.Collections;
+import java.util.*;
 
 public class HandScorer {
 	
@@ -111,23 +112,71 @@ public class HandScorer {
 			else score += (one*50);
 			score += next_max_num;
 		}
-		else {
-			for(int i=0;i<5;i++) System.out.println(hand[i]);
-			
+		else {			
 			if(hand[0].getNumber()==1) {
 				score = 14*50;
 				score += hand[0].getSuit();
-				System.out.println(hand[0].getSuit());
 			}
 			else {
 				score = hand[4].getNumber()*50;
 				score += hand[4].getSuit();
-				System.out.println(hand[4].getSuit());
 			}
 			
 		}
-		
 		return score;
+	}
+	
+	String cnts(int x) { // change_number_to_shape
+		String temp = "";
+		if(x==1) temp="A";
+		else if(x==11) temp = "J";
+		else if(x==12) temp = "Q";
+		else if(x==13) temp = "K";
+		else temp = Integer.toString(x);
+		return temp;
+	}
+	
+	String csts(int x) { // change shape to string
+		String temp = "";
+		if(x==4) temp = "Spade";
+		else if(x==3) temp = "Diamond";
+		else if(x==2) temp = "Heart";
+		else temp = "Club";
+		return temp;
+	}
+	
+	String return_Jokbo() {
+		String str = "";
+		if(Royal_Straight_Flush()) str = "Royal Straight Flush";
+		else if(Straight_Flush()) str = "Straight Flush";
+		else if(Four_Card()) str = cnts(hand[1].getNumber()) + " Four Card";
+		else if(Full_House()) str = cnts(hand[2].getNumber()) + " Full House";	
+		else if(Flush())  str = csts(hand[0].getSuit()) + " Flush";
+		else if(Straight()) str = "Straight";
+		else if(Triple()) str = cnts(hand[2].getNumber()) + " Triple";
+		else if(TwoPair()) str = cnts(hand[3].getNumber()) + ", " + cnts(hand[1].getNumber()) + " Two Pair";
+		else if(OnePair()) {
+			int [] checking_arr = new int[14];
+			for(int i = 0; i < 5; i++) {
+				checking_arr[hand[i].getNumber()]++;
+			}
+			System.out.println();
+			int one = 0;
+			int next_max_num = -1;
+			for(int i = 1; i <= 13; i++) {
+				if(checking_arr[i] == 2) {
+					one = i;
+					break;
+				}
+			}
+			str = cnts(one) + " One pair";
+			// one에는 pair의 정보
+		}
+		else { 
+			if(hand[0].getNumber()==1) str = csts(hand[0].getSuit()) + " A Top";
+			else str = csts(hand[4].getSuit()) + " " + cnts(hand[4].getNumber()) + " Top";
+		}
+		return str;
 	}
 	
 	// Card 클래스의 number는 숫자, suit은 모양, CardId는 42까지로 표현한 카드
