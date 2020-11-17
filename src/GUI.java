@@ -28,10 +28,10 @@ public class GUI {
 	
 	public static void initGUI(){
 		
-		player_num = Integer.parseInt(JOptionPane.showInputDialog("ÀÎ¿ø ¼ö¸¦ Àû¾îÁÖ¼¼¿ä!"));
+		player_num = Integer.parseInt(JOptionPane.showInputDialog("ì¸ì› ìˆ˜ë¥¼ ì ì–´ì£¼ì„¸ìš”!"));
 		for(int i=0; i<player_num; i++)
 		{
-			player[i] = JOptionPane.showInputDialog((i + 1) +"¹øÂ° ÇÃ·¹ÀÌ¾îÀÇ ÀÌ¸§À» Àû¾îÁÖ¼¼¿ä!");
+			player[i] = JOptionPane.showInputDialog((i + 1) +"ë²ˆì§¸ í”Œë ˆì´ì–´ì˜ ì´ë¦„ì„ ì ì–´ì£¼ì„¸ìš”!");
 		}
 	
 		mainFrame = new JFrame("Poker Game"); // creates and sets title of mainFrame
@@ -42,13 +42,13 @@ public class GUI {
 		mainFrame.setLocation(100, 100);
 		mainFrame.setVisible(true);
 
-		//µ¦ ¸¸µé±â
+		//ë± ë§Œë“¤ê¸°
 		cardMap = new HashMap<Integer, String>();
 		for (int i = 1; i <= Deck.SIZE; i++) {
 			cardMap.put(i, IMAGE_FOLDER_LOCATION + i + ".png");
 		}
 		
-		//°¡¿îµ¥ Å×ÀÌºí ±×¸²
+		//ê°€ìš´ë° í…Œì´ë¸” ê·¸ë¦¼
 		tablePanel = new JPanel();
 		JLabel table = new JLabel(new ImageIcon(POKER_TABLE_IMAGE));
 		tablePanel.setBounds(rect(0,0, table.getPreferredSize()));
@@ -153,9 +153,33 @@ public class GUI {
 			cardPanel.add(iconizeCard(player.c(i).getCardID()));
 		}
 		
-		// ¿©±â´Ù°¡ text (JLable addÇÏ¸é µÊ)a
 		JLabel jokbo = new JLabel();
 		jokbo.setText(jname);
+		
+		playerFrame.add(cardPanel);
+		playerFrame.add(jokbo);
+	}
+	
+	public static void WinTable(Player p, int win_idx, String jname){
+		playerFrame = new JFrame("Winner"); // creates and sets title of mainFrame
+		playerFrame.setLayout(new FlowLayout());
+		playerFrame.setSize(400, 200);
+		playerFrame.setLocation(100, 100);
+		playerFrame.setVisible(true);
+		
+		
+		ArrayList<Player> currPlayers = currTable.getPlayers();
+		
+		JPanel cardPanel = new JPanel();
+		
+		for(int i=0; i<5; i++) {
+			cardPanel.add(iconizeCard(p.c(i).getCardID()));
+		}
+		
+		JLabel jokbo = new JLabel();
+		String user_name = player[win_idx];
+		user_name = "Winer is : " + user_name +"    " + jname;
+		jokbo.setText(user_name);
 		
 		playerFrame.add(cardPanel);
 		playerFrame.add(jokbo);
@@ -189,9 +213,9 @@ public class GUI {
 				
 			}
 			String user_name = player[win_idx];
-			// ÇØ´ç playerÀÇ Ä«µå
+			// í•´ë‹¹ playerì˜ ì¹´ë“œ
 			playerFrame.add(cardPanel);
-			// ÇØ´ç Á·º¸
+			// í•´ë‹¹ ì¡±ë³´
 			JLabel jokbo = new JLabel();
 			jokbo.setText(user_name + " : " + players.get_jname());
 			
@@ -280,7 +304,7 @@ public class GUI {
 				}
 			}
 			Player win_p = currTable.getPlayers().get(win_idx);
-			fillTable(currTable.getPlayers().get(win_idx), win_p.get_score(), win_p.get_jname());
+			WinTable(win_p, win_idx, win_p.get_jname());
 		}
 		
 	}
